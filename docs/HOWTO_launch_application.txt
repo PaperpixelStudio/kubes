@@ -1,0 +1,2 @@
+- télécharger la dernière version de java (minimum jre7)
+- Mettre les fichiers de l'archive "add_to_jre.zip" dans le dossier Program Files > Java > jre7 > bin

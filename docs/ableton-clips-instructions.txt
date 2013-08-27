@@ -1,0 +1,14 @@
+
+  [HOW-TO] Créer des clips compatibles avec les loop kubes
+------------------------------------------------------------
+
+- Afficher le panneau "In/Out" pour chaque track: View > cocher "In/Out"
+- Placer le clip sur la track
+- double cliquer sur le clip
+- vérifier que l'icône "L" (en bas à gauche) est cochée
+- Dans la section "Launch", mettre "Launch mode" à "Toggle" et "Quantization" à "1/4"
+- TRES IMPORTANT: Dans le panneau "In/Out" de la track, vérifier que "Midi From" est sur "No input"
+
+Note: il est possible de paramétrer le launch mode globalement pour tous les clips: 
+Options > Preferences > Record / Warp / Launch, section "Launch", Default Launch Mode : Toggle 
+et Default Launch Quantization: 1/4
