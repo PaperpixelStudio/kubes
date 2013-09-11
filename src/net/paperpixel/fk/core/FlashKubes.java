@@ -59,16 +59,17 @@ public final class FlashKubes extends PApplet {
     private static OscP5 oscP5;
 
     static public void main(String args[]) {
-        PApplet.main(new String[] { "net.paperpixel.fk.core.FlashKubes" });
+         PApplet.main(new String[] { "net.paperpixel.fk.core.FlashKubes" });
+    //   PApplet.main(new String[] { "Kubes 2.0" });
+
     }
 
 
     public void setup() {
         size(1024, 768, OPENGL);
         smooth();
-
         FKProcessing.setup(this);
-
+        textSize(15);
         controls = new FKControls();
 
         cam = new PeasyCam(this, 1800);
@@ -111,7 +112,8 @@ public final class FlashKubes extends PApplet {
 
         /*Augmente les fps en temporisant l'update de la depthMap*/
 //        if (millis() % 20 < 10) {
-        kinect.update();
+        if(isKinectConnected)
+            kinect.update();
 //        }
 
         pgl.beginGL();
@@ -248,7 +250,7 @@ public final class FlashKubes extends PApplet {
 
 
     private void _showFrameRate() {
-        fill(100);
+        fill(255);
         cam.beginHUD();
         text("frameRate: " + str(round(frameRate)) + " fps", 10, 20);
         cam.endHUD();
