@@ -93,7 +93,7 @@ public final class FlashKubes extends PApplet {
         /*Loads the first config file found in sketchPath*/
         try {
             controls.getProfilesControls().loadConfigFile(0);
-        } catch (NullPointerException e) {
+        } catch (Exception e) {
             int[][] kubeTypeIndexes = controls.getKubeWallControls().getWallController().getKubeTypeIndexes();
 
             if (kubeTypeIndexes != null && kubeTypeIndexes.length > 0) {
