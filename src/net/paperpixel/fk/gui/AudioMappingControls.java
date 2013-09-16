@@ -18,6 +18,10 @@ public class AudioMappingControls extends AbstractControlGroup {
     private Button clipStopButton;
     private Button mapPitchXButton;
     private Button mapPitchYButton;
+    private Button mapPitchZButton;
+    private Button mapNoteOnButton;
+    private Button mapNoteOffButton;
+    private Textlabel mappingTextLabel;
     private Toggle send_midi;
 
     private AbstractKube selectedKube = null;
@@ -141,6 +145,61 @@ public class AudioMappingControls extends AbstractControlGroup {
                 .setBroadcast(true)
                 .hide();
 
+        pos_y += 30;
+
+
+        /*PITCH Z MAP BUTTON*/
+
+        mapPitchZButton = cp5.addButton("midi_wall_z_map_button")
+                .setBroadcast(false)
+                .setGroup(controlGroup)
+                .setCaptionLabel("MAP PITCH Z")
+                .setPosition(160, pos_y)
+                .setValue(4)
+                .addListener(new MapButtonListener())
+                .setBroadcast(true)
+                .hide();
+
+        pos_y += 30;
+
+
+        /*MAPPING LABEL*/
+
+        mappingTextLabel = cp5.addTextlabel("midi_wall_map_label")
+                .setGroup(controlGroup)
+                .setPosition(100, pos_y)
+                .hide();
+
+
+        /*NOTE ON MAP BUTTON*/
+
+        pos_y = temp_pos_y;
+
+        mapNoteOnButton = cp5.addButton("midi_wall_note_on_map_button")
+                .setBroadcast(false)
+                .setGroup(controlGroup)
+                .setCaptionLabel("MAP NOTE ON")
+                .setPosition(250, pos_y)
+                .setValue(5)
+                .addListener(new MapButtonListener())
+                .setBroadcast(true)
+                .hide();
+
+        pos_y += 30;
+
+        /*NOTE OFF MAP BUTTON*/
+
+        mapNoteOffButton = cp5.addButton("midi_wall_note_off_map_button")
+                .setBroadcast(false)
+                .setGroup(controlGroup)
+                .setCaptionLabel("MAP NOTE OFF")
+                .setPosition(250, pos_y)
+                .setValue(6)
+                .addListener(new MapButtonListener())
+                .setBroadcast(true)
+                .hide();
+
+
         return controlGroup;
     }
 
@@ -165,34 +224,72 @@ public class AudioMappingControls extends AbstractControlGroup {
                     if (myKube.getType().equals(KubeType.LOOP_KUBE)) {
                         clipPlayButton.show();
                         clipStopButton.show();
+
                         mapPitchXButton.hide();
                         mapPitchYButton.hide();
+                        mapPitchZButton.hide();
+
+                        mapNoteOnButton.hide();
+                        mapNoteOffButton.hide();
                     } else if(myKube.getType().equals(KubeType.NOTE_KUBE)) {
                         mapPitchXButton.show();
                         mapPitchYButton.show();
+                        mapPitchZButton.show();
+
                         clipPlayButton.hide();
                         clipStopButton.hide();
+
+                        mapNoteOnButton.hide();
+                        mapNoteOffButton.hide();
                     } else if (myKube.getType().equals(KubeType.EFFECT_KUBE)) {
                         mapPitchXButton.hide();
                         mapPitchYButton.show();
+                        mapPitchZButton.hide();
+
                         clipPlayButton.hide();
                         clipStopButton.hide();
+
+                        mapNoteOnButton.hide();
+                        mapNoteOffButton.hide();
+                    } else if (myKube.getType().equals(KubeType.XA_KUBE)) {
+                        mapPitchXButton.show();
+                        mapPitchYButton.show();
+                        mapPitchZButton.show();
+
+                        clipPlayButton.hide();
+                        clipStopButton.hide();
+
+                        mapNoteOnButton.show();
+                        mapNoteOffButton.show();
                     } else {
 
                     }
                 } else {
                     kubeTextLabel.hide();
+                    mappingTextLabel.hide();
+
                     clipPlayButton.hide();
                     clipStopButton.hide();
+
                     mapPitchXButton.hide();
                     mapPitchYButton.hide();
+                    mapPitchZButton.hide();
+
+                    mapNoteOnButton.hide();
+                    mapNoteOffButton.hide();
                 }
             } catch(NullPointerException e) {
                 kubeTextLabel.hide();
+
                 clipPlayButton.hide();
                 clipStopButton.hide();
+
                 mapPitchXButton.hide();
                 mapPitchYButton.hide();
+                mapPitchZButton.hide();
+
+                mapNoteOnButton.hide();
+                mapNoteOffButton.hide();
             }
         }
     }
@@ -202,6 +299,18 @@ public class AudioMappingControls extends AbstractControlGroup {
             MidiType myType = MidiType.values()[(int) theEvent.getValue()];
             try {
                 MidiCommunication.learnAudio(selectedKube.getId(), myType);
+
+                String myText = "Mapped " + myType.name() + " on " + selectedKube.getType().getName()
+                        + " kube // id " + selectedKube.getId() + " // ch." + (MidiCommunication.DEFAULT_AUDIO_CHANNEL + 1) + " // value ";
+                if(MidiType.NOTE_OFF != myType && MidiType.NOTE_ON != myType) {
+                    myText += MidiCommunication.getControllerNumber(selectedKube.getId(), myType);
+                } else {
+                    myText += selectedKube.getId();
+                }
+                mappingTextLabel
+                        .setText(myText)
+                        .show();
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

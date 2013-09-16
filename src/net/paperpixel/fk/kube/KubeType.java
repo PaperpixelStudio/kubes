@@ -11,7 +11,8 @@ public enum KubeType {
     EFFECT_KUBE("effect", EffectKube.class.getName(), FKConstants.EFFECT_KUBE_COLOR),
     NOTE_KUBE("note", NoteKube.class.getName(), FKConstants.NOTE_KUBE_COLOR),
   //  IDLE_KUBE("idle", IdleKube.class.getName(), FKConstants.IDLE_KUBE_COLOR),
-    LOOP_KUBE("loop", LoopKube.class.getName(), FKConstants.LOOP_KUBE_COLOR);
+    LOOP_KUBE("loop", LoopKube.class.getName(), FKConstants.LOOP_KUBE_COLOR),
+    XA_KUBE("xa", XaCube.class.getName(), FKConstants.XA_KUBE_COLOR);
 
     String name;
     String className;

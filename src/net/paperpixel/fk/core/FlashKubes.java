@@ -13,6 +13,7 @@ import oscP5.OscP5;
 import peasy.PeasyCam;
 import processing.core.*;
 import processing.opengl.*;
+import processing.opengl.PGraphicsOpenGL;
 // import themidibus.MidiBus;
 
 import javax.media.opengl.GL;
@@ -92,7 +93,7 @@ public final class FlashKubes extends PApplet {
         /*Loads the first config file found in sketchPath*/
         try {
             controls.getProfilesControls().loadConfigFile(0);
-        } catch (NullPointerException e) {
+        } catch (ArrayIndexOutOfBoundsException e) {
             int[][] kubeTypeIndexes = controls.getKubeWallControls().getWallController().getKubeTypeIndexes();
 
             if (kubeTypeIndexes != null && kubeTypeIndexes.length > 0) {

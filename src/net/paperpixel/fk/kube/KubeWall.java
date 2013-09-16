@@ -90,7 +90,9 @@ public class KubeWall extends FKProcessing {
         try {
             for (int i = 0; i < p5.getTotalLines(); i++) {
                 for (int j = 0; j < p5.getTotalColumns(); j++) {
-                    kubes[i][j].setIdle(isIdle());
+                    if(kubes[i][j].isIdle() != isIdle()) {
+                        kubes[i][j].setIdle(isIdle());
+                    }
                     kubes[i][j].draw();
                 }
             }

@@ -41,6 +41,7 @@ public class FKConstants {
     public static final Color IDLE_KUBE_COLOR = new Color(50, 100, 200);
     public static final Color EFFECT_KUBE_COLOR = new Color(103, 209, 17);
     public static final Color LOOP_KUBE_COLOR = new Color(18, 130, 255);
+    public static final Color XA_KUBE_COLOR = new Color(185, 52, 255);
     public static final Color INACTIVE_KUBE_COLOR = new Color(0, 0, 0);
 
     /* OSC */

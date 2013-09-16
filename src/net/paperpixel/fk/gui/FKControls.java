@@ -74,6 +74,7 @@ public class FKControls extends FKProcessing {
         networkingControls = new NetworkingControls("networkingGroup", cp5, controlWindow);
         networkingGroup = networkingControls.setup();
         networkingGroup.setPosition(550, 520);
+        networkingGroup.hide();
     }
 
 

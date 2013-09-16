@@ -64,6 +64,7 @@ public class NoteKube extends AbstractKube {
         try {
             MidiCommunication.sendAudioController(getId(), MidiType.PITCH_X, 0);
             MidiCommunication.sendAudioController(getId(), MidiType.PITCH_Y, 0);
+            MidiCommunication.sendAudioController(getId(), MidiType.PITCH_Z, 0);
 //            MidiCommunication.sendNote(getId(), 0, 0);
         } catch (Exception e) {
             e.printStackTrace();
@@ -79,14 +80,15 @@ public class NoteKube extends AbstractKube {
     private void _playNote() {
         int midiPitchX = (int) PApplet.map((int) getPitch().x, 0, p5.getKubeSize(), 0, 127);
         int midiPitchY = (int) PApplet.map((int) getPitch().y, 0.0f, p5.getKubeSize(), 0, 127);
-//        int midiPitchY = (int) PApplet.map((int) getScaledPitch().y, 0.0f, p5.getNotesPerKube(), 40, 100);
+        int midiPitchZ = (int) PApplet.map((int) getPitch().z, 0.0f, p5.getKubeSize(), 127, 0);
 
         /*on peut tester, une sorte de multi multi touch touch*/
 //        int midiPitch = (int) PApplet.map(getPitch().x + getPitch().y, 0, p5.getKubeSize() * 2, 40, 100);
 
         try {
-//            MidiCommunication.sendAudioController(getId(), MidiType.PITCH_X, midiPitchX);
-//            MidiCommunication.sendAudioController(getId(), MidiType.PITCH_Y, midiPitchY);
+            MidiCommunication.sendAudioController(getId(), MidiType.PITCH_X, midiPitchX);
+            MidiCommunication.sendAudioController(getId(), MidiType.PITCH_Y, midiPitchY);
+            MidiCommunication.sendAudioController(getId(), MidiType.PITCH_Z, midiPitchZ);
 //            MidiCommunication.sendNote(getId(), midiPitchY, speed);
         } catch (Exception e) {
             e.printStackTrace();

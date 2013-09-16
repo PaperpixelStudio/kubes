@@ -5,6 +5,8 @@ import net.paperpixel.fk.core.FKProcessing;
 import processing.core.PApplet;
 import promidi.*;
 
+import javax.sound.midi.MidiMessage;
+import javax.sound.midi.ShortMessage;
 import java.awt.*;
 // import themidibus.MidiBus;
 
@@ -19,7 +21,15 @@ public class MidiCommunication extends FKProcessing {
 //    public static int prevMillis = 0;
 
     public static void learnAudio(int theKubeId, MidiType theType) throws Exception {
-        sendAudio(theKubeId, theType, 127);
+        if(theType != MidiType.NOTE_OFF && theType != MidiType.NOTE_ON) {
+            sendAudio(theKubeId, theType, 127);
+        } else {
+            if(theType == MidiType.NOTE_ON) {
+                sendNote(theKubeId, 127, ShortMessage.NOTE_ON);
+            } else {
+                sendNote(theKubeId, 0, ShortMessage.NOTE_OFF);
+            }
+        }
     }
 
     public static void learnVisual(int theKubeId, VisualMappingType theMappingType) throws Exception {
@@ -86,8 +96,8 @@ public class MidiCommunication extends FKProcessing {
 //            try {
 //                int myValue = PApplet.constrain(theValue, 0, 127);
 //
-//                MidiOut out = MidiIO.getInstance(p5).getMidiOut(1 + getMasterSlaveKubeId(theKubeId), getDeviceName(AUDIO_COMMUNICATION));
-//                out.sendNote(new Note(myValue, 100, 1000));
+//                MidiOut out = MidiIO.getInstance(p5).getMidiOut(DEFAULT_AUDIO_CHANNEL, getDeviceName(AUDIO_COMMUNICATION));
+//                out.sendNote(new Note(theKubeId, theValue, 1000));
 //                if(p5.isDebug())
 //                    PApplet.println("[NOTE: Midi message sent on device " + getDeviceName(AUDIO_COMMUNICATION) + " channel " + (2 + getMasterSlaveKubeId(theKubeId)) + " note value " + myValue + "]");
 //            } catch (Exception e) {
@@ -96,6 +106,22 @@ public class MidiCommunication extends FKProcessing {
 //            }
 //        }
 //    }
+
+    public static void sendNote(int theKubeId, int theValue, int theMessage) {
+        /*MESSAGE TYPE: noteOn-noteOff / CHANNEL: DEFAULT / DATA1: kubeId / DATA2: 127-0 */
+        if(p5.isSendAudioMidi()) {
+            try {
+                int myValue = PApplet.constrain(theValue, 0, 127);
+                MidiOut out = MidiIO.getInstance(p5).getMidiOut(DEFAULT_AUDIO_CHANNEL, getDeviceName(AUDIO_COMMUNICATION));
+                Note myNote = new Note(myValue, 100, 1000);
+                myNote.setMessage(theMessage, DEFAULT_AUDIO_CHANNEL, theKubeId, theValue);
+                out.sendEvent(myNote);
+            } catch (Exception e) {
+                if(p5.isDebug())
+                    PApplet.println("could not send midi message");
+            }
+        }
+    }
 
     private static void sendAudio(int theKubeId, MidiType theType, int theValue) {
         if(p5.isSendAudioMidi()) {
