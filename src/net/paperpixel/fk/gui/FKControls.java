@@ -26,6 +26,7 @@ public class FKControls extends FKProcessing {
     private ControlGroup kubeWallGroup;
     private ControlGroup midiMappingGroup;
     private ControlGroup lightingMappingGroup;
+    private ControlGroup DMXMappingGroup;
     private ControlGroup animationGroup;
     private ControlGroup networkingGroup;
 
@@ -34,6 +35,7 @@ public class FKControls extends FKProcessing {
     private ProfilesControls profilesControls;
     private AudioMappingControls audioMappingControls;
     private LightingMappingControls lightingMappingControls;
+    private DMXMappingControls DMXMappingControls;
     private AnimationControls animationControls;
     private NetworkingControls networkingControls;
 
@@ -59,9 +61,15 @@ public class FKControls extends FKProcessing {
         midiMappingGroup = audioMappingControls.setup();
         midiMappingGroup.setPosition(550, 120);
 
-        lightingMappingControls = new LightingMappingControls("lightingMappingGroup", cp5, controlWindow);
-        lightingMappingGroup = lightingMappingControls.setup();
-        lightingMappingGroup.setPosition(550, 340);
+        /*For enttec DMX USB PRO we use DMXCommunication class to send info through serial*/
+
+//        lightingMappingControls = new LightingMappingControls("lightingMappingGroup", cp5, controlWindow);
+//        lightingMappingGroup = lightingMappingControls.setup();
+//        lightingMappingGroup.setPosition(550, 340);
+
+        DMXMappingControls = new DMXMappingControls("DMXMappingGroup", cp5, controlWindow);
+        DMXMappingGroup = DMXMappingControls.setup();
+        DMXMappingGroup.setPosition(550, 340);
 
         profilesControls = new ProfilesControls("profile_group", cp5, controlWindow);
         profilesGroup = profilesControls.setup();
@@ -151,5 +159,9 @@ public class FKControls extends FKProcessing {
 
     public NetworkingControls getNetworkingControls() {
         return networkingControls;
+    }
+
+    public DMXMappingControls getDMXMappingControls() {
+        return DMXMappingControls;
     }
 }

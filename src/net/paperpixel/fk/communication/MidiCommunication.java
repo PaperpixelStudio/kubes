@@ -50,6 +50,7 @@ public class MidiCommunication extends FKProcessing {
 
 
     public static void sendVisual(int theKubeId, Color theColor, float theAlpha) throws Exception {
+        /*For enttec DMX USB PRO we use DMXCommunication class to send info through serial*/
         int myRedValue = (int) PApplet.map(theColor.getRed(), 0, 255, 0, 127);
         int myGreenValue = (int) PApplet.map(theColor.getGreen(), 0, 255, 0, 127);
         int myBlueValue = (int) PApplet.map(theColor.getBlue(), 0, 255, 0, 127);

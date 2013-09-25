@@ -82,7 +82,7 @@ public class KubeWall extends FKProcessing {
             }
         } catch (NullPointerException e) {
             if(p5.isDebug())
-                PApplet.println("can't perform check");
+                PApplet.println("can'x perform check");
         }
     }
 
@@ -101,12 +101,12 @@ public class KubeWall extends FKProcessing {
             }
         } catch(NullPointerException e) {
             if(p5.isDebug()){
-                PApplet.println("can't draw kubewall NPE");
+                PApplet.println("can'x draw kubewall NPE");
                 e.printStackTrace();
             }
         } catch (ArrayIndexOutOfBoundsException e) {
             if (p5.isDebug()) {
-                PApplet.println("can't draw kubewall AIOOBE");
+                PApplet.println("can'x draw kubewall AIOOBE");
                 e.printStackTrace();
             }
             p5.recreateKubeWall();
@@ -171,6 +171,17 @@ public class KubeWall extends FKProcessing {
         return kubes;
     }
 
+    public AbstractKube getKubeById(int theId) {
+        for (int i = 0; i < kubes.length; i++) {
+            for(int j = 0; j < kubes[i].length; j++) {
+                if(kubes[i][j].getId() == theId) {
+                    return kubes[i][j];
+                }
+            }
+        }
+        return null;
+    }
+
     public void setIsUserPresent(boolean isIt) {
         userPresent = isIt;
     }
@@ -184,7 +195,7 @@ public class KubeWall extends FKProcessing {
             return kubes[theLine][theCol];
         } catch(ArrayIndexOutOfBoundsException e) {
             if(p5.isDebug())
-                PApplet.println("Kube doesn't exist at line " + theLine + " and col " + theCol);
+                PApplet.println("Kube doesn'x exist at line " + theLine + " and col " + theCol);
             return null;
         }
     }
@@ -262,7 +273,7 @@ public class KubeWall extends FKProcessing {
             }
         } catch (NullPointerException e) {
             if(p5.isDebug())
-                PApplet.println("Can't check myIdle");
+                PApplet.println("Can'x check myIdle");
         }
     }
 

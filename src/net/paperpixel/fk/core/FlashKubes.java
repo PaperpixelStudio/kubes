@@ -39,6 +39,7 @@ public final class FlashKubes extends PApplet {
     private boolean draw_kubes = true;
     private boolean send_audio_midi = false;
     private boolean send_light_midi = false;
+    private boolean send_dmx = false;
     private boolean debug = false;
     private int kubeMargin = 0;
     private float bpm = 120;
@@ -167,7 +168,7 @@ public final class FlashKubes extends PApplet {
             getKubeWall().resetAllKubes();
         } catch (NullPointerException e) {
             if(isDebug())
-                PApplet.println("Couldn't reset all kubes");
+                PApplet.println("Couldn'x reset all kubes");
         }
         super.stop();
     }
@@ -284,7 +285,7 @@ public final class FlashKubes extends PApplet {
             println("controlEvent : "+theEvent);
 
 
-        /* Change type colors (controlP5 bug: doesn't work with a listener)
+        /* Change type colors (controlP5 bug: doesn'x work with a listener)
        * TODO: find a way to do this in KubeWallControls
        * */
         int i = 0;
@@ -389,5 +390,9 @@ public final class FlashKubes extends PApplet {
 
     public boolean isDrawKubes() {
         return draw_kubes;
+    }
+
+    public boolean isSendDmx() {
+        return send_dmx;
     }
 }

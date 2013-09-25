@@ -52,7 +52,7 @@ public abstract class AbstractAnimation extends FKProcessing {
                     }
                 } catch(NullPointerException e) {
                     if(p5.isDebug())
-                        PApplet.println("kube with ID " + j + " doesn't exist");
+                        PApplet.println("kube with ID " + j + " doesn'x exist");
                 }
             }
             if(stepIsInactive) {

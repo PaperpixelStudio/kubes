@@ -81,12 +81,12 @@ public class AnimationStepper extends FKProcessing {
                 stepsCpt++;
             } catch (IndexOutOfBoundsException e) {
                 if (p5.isDebug()) {
-                    PApplet.println("Couldn't animate this step IOOBE");
+                    PApplet.println("Couldn'x animate this step IOOBE");
                     e.printStackTrace();
                 }
             } catch (NullPointerException e) {
                 if (p5.isDebug()) {
-                    PApplet.println("Couldn't animate this step NPE");
+                    PApplet.println("Couldn'x animate this step NPE");
                     e.printStackTrace();
                 }
             }
@@ -106,7 +106,7 @@ public class AnimationStepper extends FKProcessing {
                     kube.setAlpha(alpha);
                 } catch(NullPointerException e) {
                     if(p5.isDebug())
-                        PApplet.println("the ID doesn't exist");
+                        PApplet.println("the ID doesn'x exist");
                 }
             }
         } else {

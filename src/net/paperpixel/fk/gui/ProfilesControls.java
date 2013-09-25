@@ -1,6 +1,7 @@
 package net.paperpixel.fk.gui;
 
 import controlP5.*;
+import net.paperpixel.fk.communication.DMXCommunication;
 import net.paperpixel.fk.communication.MidiCommunication;
 
 import java.io.File;
@@ -129,7 +130,10 @@ public class ProfilesControls extends AbstractControlGroup {
         if (profileNameItem != null) {
             profileName = profileNameItem.getName();
             cp5.loadProperties(profileName);
-            MidiCommunication.populateMidiDevices(p5.getControls().getLightingMappingControls().getLightingDeviceDDL());
+
+            /*For enttec DMX USB PRO we use DMXCommunication class to send info through serial*/
+//            MidiCommunication.populateMidiDevices(p5.getControls().getLightingMappingControls().getLightingDeviceDDL());
+            DMXCommunication.setAllChannels(p5.getControls().getDMXMappingControls().getWallController().getDmxChannels());
             MidiCommunication.populateMidiDevices(p5.getControls().getAudioMappingControls().getAudioDeviceDDL());
             _populateProfileList();
         }

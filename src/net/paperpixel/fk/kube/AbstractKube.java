@@ -1,5 +1,6 @@
 package net.paperpixel.fk.kube;
 
+import net.paperpixel.fk.communication.DMXCommunication;
 import net.paperpixel.fk.communication.MidiCommunication;
 import net.paperpixel.fk.core.FKConstants;
 import net.paperpixel.fk.core.FKProcessing;
@@ -12,6 +13,7 @@ import java.awt.*;
 public abstract class AbstractKube extends FKProcessing {
     protected PVector position = new PVector();
     protected int id, pointsInThisKube, prevPointsInThisKube, line, column = 0;
+    protected int dmxChannel = 0;
     protected float alpha = 0.0f;
     protected Color color = new Color(255, 255, 255);
     private KubeType type;
@@ -163,7 +165,19 @@ public abstract class AbstractKube extends FKProcessing {
 
     protected void sendLight() {
         try {
-            MidiCommunication.sendVisual(getId(), getAlphaBlendedColor(), getAlpha());
+            /*For enttec DMX USB PRO we use DMXCommunication class to send info through serial*/
+//            MidiCommunication.sendVisual(getId(), getAlphaBlendedColor(), getAlpha());
+            Color myColor = new Color(0, 0, 0);
+            if(getAlpha() > 0) {
+                myColor = getAlphaBlendedColor();
+            }
+
+            int dmxChannel = getDmxChannel();
+            if(dmxChannel == 0) {
+                dmxChannel = getId(); // if dmx is not mapped, use kube id
+            }
+
+            DMXCommunication.send(dmxChannel, myColor);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -259,5 +273,13 @@ public abstract class AbstractKube extends FKProcessing {
 
     public void setIdle(boolean idle) {
         this.idle = idle;
+    }
+
+    public int getDmxChannel() {
+        return dmxChannel;
+    }
+
+    public void setDmxChannel(int dmxChannel) {
+        this.dmxChannel = dmxChannel;
     }
 }
