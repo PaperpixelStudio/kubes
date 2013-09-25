@@ -2,6 +2,7 @@ package net.paperpixel.fk.gui;
 
 import controlP5.*;
 
+import net.paperpixel.fk.communication.DMXCommunication;
 import net.paperpixel.fk.core.FKProcessing;
 
 

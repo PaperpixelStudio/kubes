@@ -4,7 +4,7 @@ import controlP5.ControlP5;
 import controlP5.Textlabel;
 import net.paperpixel.fk.core.FlashKubes;
 import net.paperpixel.fk.kube.AbstractKube;
-import net.paperpixel.fk.util.Pair;
+//import net.paperpixel.fk.util.Pair;
 
 import java.util.ArrayList;
 
@@ -17,7 +17,7 @@ public class DMXWallController extends WallController<DMXWallController> {
 
 //        WallView view = new WallView(theP5);
 //        setView(new view);
-        registerProperty("kubeTypeIndexes");
+        registerProperty("dmxChannels");
     }
 
     public void setDmxChannelProperty() {
@@ -37,5 +37,9 @@ public class DMXWallController extends WallController<DMXWallController> {
 
     public int[][] getDmxChannels() {
         return dmxChannels;
+    }
+
+    public void setDmxChannels(int[][] dmxChannels) {
+        this.dmxChannels = dmxChannels;
     }
 }

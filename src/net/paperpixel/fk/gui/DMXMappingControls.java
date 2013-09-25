@@ -2,16 +2,13 @@ package net.paperpixel.fk.gui;
 
 import controlP5.*;
 import net.paperpixel.fk.communication.DMXCommunication;
-import net.paperpixel.fk.gui.wall_controller.DMXWallController;
-import net.paperpixel.fk.gui.wall_controller.WallController;
+import net.paperpixel.fk.gui.wall_controller.*;
 import net.paperpixel.fk.gui.wall_controller.WallView;
 import net.paperpixel.fk.kube.AbstractKube;
 import net.paperpixel.fk.kube.KubeType;
-import net.paperpixel.fk.util.Pair;
+//import net.paperpixel.fk.util.Pair;
 import processing.core.PApplet;
 import processing.serial.*;
-
-import java.util.ArrayList;
 
 public class DMXMappingControls extends AbstractControlGroup {
 
@@ -56,7 +53,7 @@ public class DMXMappingControls extends AbstractControlGroup {
                 .addListener(new ChangePortListener());
 
 
-        _populateSerialPorts();
+        populateSerialPorts();
 
 
         /*WALL CONTROLLER*/
@@ -104,7 +101,7 @@ public class DMXMappingControls extends AbstractControlGroup {
         return controlGroup;
     }
 
-    private void _populateSerialPorts() {
+    public void populateSerialPorts() {
         serialPortsList.clear();
 
         for(int i = 0; i < Serial.list().length; i++) {
@@ -121,10 +118,9 @@ public class DMXMappingControls extends AbstractControlGroup {
 
                 if (!myKube.getType().equals(KubeType.INACTIVE_KUBE)) {
                     kubeChannelTF.show();
-                    kubeChannelTF.setText(""+(myKube.getDmxChannel() == 0 ? myKube.getId() : myKube.getDmxChannel()));
+                    kubeChannelTF.setText("" + myKube.getDmxChannel());
                     mapKubeButton.show();
                     selectedKube = myKube;
-                    PApplet.println("test: " + kubeChannelTF.getStringValue());
                 } else {
                 }
             } catch(NullPointerException e) {
@@ -164,5 +160,13 @@ public class DMXMappingControls extends AbstractControlGroup {
 
     public DMXWallController getWallController() {
         return wallController;
+    }
+
+    public DropdownList getSerialPortsList() {
+        return serialPortsList;
+    }
+
+    public String getSerialPortName() {
+        return serialPortsList.getItem((int)serialPortsList.getValue()).getName();
     }
 }

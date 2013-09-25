@@ -7,25 +7,25 @@ import net.paperpixel.fk.kube.AbstractKube;
 import processing.core.PApplet;
 
 import java.awt.*;
-import java.util.ArrayList;
 
 public class DMXCommunication extends FKProcessing {
     private static DmxP512 dmxOutput;
 
-    boolean LANBOX=false;
-    String LANBOX_IP="192.168.1.77";
+    private boolean LANBOX=false;
+    private String LANBOX_IP="192.168.1.77";
+    private static String serialPort = "COM1";
 
     public static final int UNIVERSE_SIZE = 128;
-    public static final String DMXPRO_PORT = "COM1";
     public static final int DMXPRO_BAUDRATE = 115000;
 
     public static void setup() {
-        setup(DMXPRO_PORT);
+        setup(serialPort);
     }
 
     public static void setup(String myPort) {
         dmxOutput = new DmxP512(p5, UNIVERSE_SIZE, false);
         dmxOutput.setupDmxPro(myPort, DMXPRO_BAUDRATE);
+        serialPort = myPort;
     }
 
     public static void send(int theDmxChannel, Color theColor) {
@@ -39,12 +39,13 @@ public class DMXCommunication extends FKProcessing {
             try {
                 dmxOutput.set(theDmxChannel, myColorArray);
             } catch(NullPointerException e) {
-                if(p5.isDebug())
-                    PApplet.println("WARNING: DMXPRO is not recognized.");
+//                if(p5.isDebug())
+//                    PApplet.println("WARNING: DMXPRO is not recognized.");
             }
 
             if(p5.isDebug()) {
-                PApplet.println("[DMX: sent color rgb("+ theColor.getRed() + ", " + theColor.getGreen() + ", " + theColor.getBlue() + ") on DMX channel " + theDmxChannel + "]");
+                PApplet.println("[DMX: sent color rgb("+ theColor.getRed() + ", " + theColor.getGreen() + ", " +
+                        theColor.getBlue() + ") on DMX channel " + theDmxChannel + " (port " + DMXCommunication.serialPort + ")]");
             }
         }
     }

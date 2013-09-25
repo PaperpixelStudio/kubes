@@ -1,6 +1,7 @@
 package net.paperpixel.fk.kube;
 
 import net.paperpixel.fk.animation.AnimationStepper;
+import net.paperpixel.fk.communication.DMXCommunication;
 import net.paperpixel.fk.communication.OSCCommunication;
 import net.paperpixel.fk.core.FKConstants;
 import net.paperpixel.fk.core.FKProcessing;
@@ -47,6 +48,7 @@ public class KubeWall extends FKProcessing {
     private void init(int theTotalLines, int theTotalColumns, int[][] theKubeTypeIndexes) {
         kubes = new AbstractKube[theTotalLines][theTotalColumns];
         kubesByIndexes = new HashMap<Integer, AbstractKube>(theTotalColumns*theTotalLines);
+        int[][] kubesDMXChannels = p5.getControls().getDMXMappingControls().getWallController().getDmxChannels();
 
         for (int i = 0; i < theTotalLines; i++) {
             for (int j = 0; j < theTotalColumns; j++) {
@@ -54,6 +56,7 @@ public class KubeWall extends FKProcessing {
                     KubeType myType = KubeType.values()[theKubeTypeIndexes[i][j]];
                     kubes[i][j] = myType.getInstance(i, j);
                     kubes[i][j].setColor(getRandomColor());
+                    kubes[i][j].setDmxChannel(kubesDMXChannels[i][j]);
                     setKubePosition(i,j);
                     int id = kubes[i][j].getId();
                     kubesByIndexes.put(id, kubes[i][j]);
@@ -82,7 +85,7 @@ public class KubeWall extends FKProcessing {
             }
         } catch (NullPointerException e) {
             if(p5.isDebug())
-                PApplet.println("can'x perform check");
+                PApplet.println("can't perform check");
         }
     }
 
@@ -101,13 +104,13 @@ public class KubeWall extends FKProcessing {
             }
         } catch(NullPointerException e) {
             if(p5.isDebug()){
-                PApplet.println("can'x draw kubewall NPE");
+                PApplet.println("can't draw kubewall NPE");
                 e.printStackTrace();
             }
         } catch (ArrayIndexOutOfBoundsException e) {
             if (p5.isDebug()) {
-                PApplet.println("can'x draw kubewall AIOOBE");
-                e.printStackTrace();
+                PApplet.println("can't draw kubewall AIOOBE");
+//                e.printStackTrace();
             }
             p5.recreateKubeWall();
         }
