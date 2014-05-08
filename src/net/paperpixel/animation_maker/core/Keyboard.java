@@ -14,9 +14,9 @@ public class Keyboard extends AMProcessing {
         } else if(p5.keyCode == PApplet.DOWN) {
             p5.getAnimator().setActiveFrame(Animator.PLAY_STEP_DOWN);
         } else if(p5.keyCode == PApplet.LEFT) {
-            p5.getAnimator().moveFrame(Animator.FRAME_MOVE_UP);
+            p5.getAnimator().getActiveFrame().getKubeWall().movePixelsLeft();
         } else if(p5.keyCode == PApplet.RIGHT) {
-            p5.getAnimator().moveFrame(Animator.FRAME_MOVE_DOWN);
+            p5.getAnimator().getActiveFrame().getKubeWall().movePixelsRight();
         } else if(p5.key == ' ' || p5.keyCode == PApplet.ENTER || p5.keyCode == PApplet.RETURN) {
             if(!p5.getAnimator().isAnimationPlaying())
                 p5.getAnimator().play();
@@ -34,8 +34,16 @@ public class Keyboard extends AMProcessing {
             p5.getAnimator().getActiveFrame().toggleKubes();
         } else if(p5.key == '=') {
             p5.getAnimator().duplicateFrame();
+        } else if(p5.key == 'b') {
+            p5.getControls().getBrushBtn().setState(!p5.isBrush());
+        } else if(p5.key == 'e') {
+            p5.getControls().getBrushBtn().setState(false);
+        } else if(p5.key == 'c') {
+            p5.getControls().changeColor();
+        } else if(p5.key == 'd') {
+            p5.getAnimator().duplicateFrame();
         } else {
-            checkKeyMap(p5.key);
+//            checkKeyMap(p5.key);
         }
     }
 

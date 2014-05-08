@@ -3,11 +3,9 @@ package net.paperpixel.animation_maker.kube;
 import net.paperpixel.animation_maker.core.AMProcessing;
 import processing.core.PVector;
 
-import java.awt.*;
-
 public class AMKube extends AMProcessing {
     private int id;
-    private Color color;
+    private Colors color;
     private boolean active;
     private PVector position = new PVector(0, 0);
 
@@ -20,13 +18,13 @@ public class AMKube extends AMProcessing {
         p5.translate(position.x, position.y);
 
         if(active) {
-            p5.fill(getColor().getRGB());
+            p5.fill(getAMColor().getColor().getRGB());
+            p5.stroke(getAMColor().getColor().getRGB());
         } else {
             p5.noFill();
+            p5.stroke(150);
         }
-
-        p5.strokeWeight(2);
-        p5.stroke(getColor().getRGB());
+        p5.strokeWeight(1);
 
         p5.rect(0, 0, p5.getKubeSize(), p5.getKubeSize());
 
@@ -38,7 +36,7 @@ public class AMKube extends AMProcessing {
         p5.translate(position.x, position.y);
 
         if(active) {
-            p5.fill(getColor().getRGB(), 30);
+            p5.fill(getAMColor().getColor().getRGB(), 60);
         } else {
             p5.noFill();
         }
@@ -57,7 +55,7 @@ public class AMKube extends AMProcessing {
         return active;
     }
 
-    public Color getColor() {
+    public Colors getAMColor() {
         return color;
     }
 
@@ -65,13 +63,15 @@ public class AMKube extends AMProcessing {
         return id;
     }
 
-    public void setColor(Color color) {
+    public void setColor(Colors color) {
         this.color = color;
     }
 
     public void setActive(boolean active) {
-        if(!p5.getAnimator().isAnimationPlaying())
+        if(!p5.getAnimator().isAnimationPlaying()) {
+            this.setColor(p5.getCurrentAMColor());
             this.active = active;
+        }
     }
 
     public void setPosition(PVector position) {
@@ -81,5 +81,13 @@ public class AMKube extends AMProcessing {
     public void setPosition(int posX, int posY) {
         this.position.x = posX;
         this.position.y = posY;
+    }
+
+    public int getColorId() {
+        if(active) {
+            return getAMColor().getId();
+        } else {
+            return 0;
+        }
     }
 }

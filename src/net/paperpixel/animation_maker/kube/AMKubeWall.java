@@ -1,13 +1,11 @@
 package net.paperpixel.animation_maker.kube;
 
 import net.paperpixel.animation_maker.core.AMProcessing;
-import net.paperpixel.fk.kube.Colors;
 import processing.core.PApplet;
 import processing.core.PVector;
 
 import java.awt.*;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class AMKubeWall extends AMProcessing {
@@ -29,7 +27,7 @@ public class AMKubeWall extends AMProcessing {
         for (int i = 0; i < totalLines; i++) {
             for(int j = 0; j < totalColumns; j++) {
                 kubes[i][j] = new AMKube(i, j);
-                kubes[i][j].setColor(colors.get(kubes[i][j].getId()));;;
+                kubes[i][j].setColor(Colors.WHITE);
                 kubes[i][j].setPosition(
                         (int) (p5.getKubeWallPosition().x + (p5.getKubeSize() * j) + (p5.getKubeMargin() * j)),
                         (int) (p5.getKubeWallPosition().y + (p5.getKubeSize() * i) + (p5.getKubeMargin() * i))
@@ -150,11 +148,52 @@ public class AMKubeWall extends AMProcessing {
     }
 
 
-    public HashMap<Integer, Boolean> getStates() {
-        HashMap<Integer, Boolean> map = new HashMap<Integer, Boolean>();
+
+    public void movePixelsLeft() {
+        for(int i = 0; i < kubes.length; i++) {
+            boolean firstActive = kubes[i][0].isActive();
+            Colors firstAMColor = kubes[i][0].getAMColor();
+
+            for(int j = 1; j < kubes[i].length; j++) {
+                swapKubes(kubes[i][j], kubes[i][j - 1]);
+
+                if(j == kubes[i].length - 1) {
+                    kubes[i][j].setActive(firstActive);
+                    kubes[i][j].setColor(firstAMColor);
+                }
+            }
+        }
+    }
+
+    public void movePixelsRight() {
+        for(int i = 0; i < kubes.length; i++) {
+            int nbColumns = kubes[i].length;
+            boolean lastActive = kubes[i][nbColumns-1].isActive();
+            Colors lastAMColor = kubes[i][nbColumns-1].getAMColor();
+
+            for(int j = nbColumns-2; j >= 0; j--) {
+                swapKubes(kubes[i][j], kubes[i][j + 1]);
+
+                if(j == 0) {
+                    kubes[i][0].setActive(lastActive);
+                    kubes[i][0].setColor(lastAMColor);
+                }
+            }
+        }
+    }
+
+    private void swapKubes(AMKube kubeA, AMKube kubeB) {
+        kubeB.setActive(kubeA.isActive());
+        kubeB.setColor(kubeA.getAMColor());
+        kubeA.setActive(false);
+    }
+
+
+    public HashMap<Integer, Integer> getStates() {
+        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
         for (int i = 0; i < p5.getTotalLines(); i++) {
             for (int j = 0; j < p5.getTotalColumns(); j++) {
-                map.put(kubes[i][j].getId(), kubes[i][j].isActive());
+                map.put(kubes[i][j].getId(), kubes[i][j].getColorId());
             }
         }
         return map;
@@ -164,9 +203,15 @@ public class AMKubeWall extends AMProcessing {
         return kubes;
     }
 
-    public void setStates(HashMap<Integer, Boolean> states) {
-        for(Map.Entry<Integer, Boolean> entry : states.entrySet()) {
-            getKubeById(entry.getKey()).setActive(entry.getValue());
+    public void setStates(HashMap<Integer, Integer> states) {
+        for(Map.Entry<Integer, Integer> entry : states.entrySet()) {
+            AMKube kube = getKubeById(entry.getKey());
+            if(entry.getValue() > 0) {
+                kube.setActive(true);
+                kube.setColor(Colors.values()[entry.getValue()-1]);
+            } else {
+                kube.setActive(false);
+            }
         }
     }
 }

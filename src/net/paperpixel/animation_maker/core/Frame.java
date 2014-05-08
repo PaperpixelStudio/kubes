@@ -34,6 +34,14 @@ public class Frame extends AMProcessing {
         }
     }
 
+    public void activateKube(PVector mousePosition, boolean _active) {
+        AMKube kube = kubeWall.getKubeFromMousePosition(mousePosition);
+        if (kube != null) {
+            kube.setActive(_active);
+            kube.setColor(p5.getCurrentAMColor());
+        }
+    }
+
     public void activateKube(int index) {
         AMKube kube = kubeWall.getKubeById(index);
         if (kube != null) {

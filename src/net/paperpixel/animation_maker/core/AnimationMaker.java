@@ -1,8 +1,10 @@
 package net.paperpixel.animation_maker.core;
 
+import net.paperpixel.animation_maker.kube.Colors;
 import processing.core.PApplet;
 import processing.core.PVector;
 
+import java.awt.*;
 import java.awt.event.MouseEvent;
 
 public class AnimationMaker extends PApplet {
@@ -14,12 +16,15 @@ public class AnimationMaker extends PApplet {
     private int kubeMargin = 3;
     private PVector kubeWallPosition = new PVector(20, 20);
 
+    private boolean is_brush = true;
+
     private Animator animator;
     private AMControls controls;
     private Clipboard clipboard;
+    private Colors current_am_color = Colors.WHITE;
 
     static public void main(String args[]) {
-        PApplet.main(new String[] { "net.paperpixel.animation_maker.core.AnimationMaker" });
+        PApplet.main(new String[]{"net.paperpixel.animation_maker.core.AnimationMaker"});
     }
 
     public void setup() {
@@ -50,7 +55,7 @@ public class AnimationMaker extends PApplet {
 
     @Override
     public void mouseDragged(MouseEvent mouseEvent) {
-        animator.getActiveFrame().activateKube(new PVector(mouseEvent.getX(), mouseEvent.getY()));
+        animator.getActiveFrame().activateKube(new PVector(mouseEvent.getX(), mouseEvent.getY()), isBrush());
     }
 
     public int getTotalColumns() {
@@ -87,5 +92,23 @@ public class AnimationMaker extends PApplet {
 
     public Clipboard getClipboard() {
         return clipboard;
+    }
+
+    public boolean isBrush() {
+        return is_brush;
+    }
+
+    public Colors getCurrentAMColor() {
+        return current_am_color;
+    }
+
+
+    /*SETTERS*/
+    public void setBrush(boolean _is_brush) {
+        is_brush = _is_brush;
+    }
+
+    public void setCurrentColor(Colors _current_color) {
+        current_am_color = _current_color;
     }
 }

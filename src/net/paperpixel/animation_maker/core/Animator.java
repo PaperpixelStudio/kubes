@@ -203,10 +203,9 @@ public class Animator extends AMProcessing {
                 for(int j = 0; j < kubes[i].length; j++) {
 
                     if(kubes[i][j].isActive()) {
-                        Color color = kubes[i][j].getColor();
-                        result += "{"+color.getRed() + "," + color.getGreen() + "," + color.getBlue() + "}";
+                        result += kubes[i][j].getAMColor().getId();
                     } else {
-                        result += "{0,0,0}";
+                        result += 0;
                     }
 
                     if(j < kubes[i].length - 1) {
@@ -220,41 +219,6 @@ public class Animator extends AMProcessing {
                 }
             }
             result += "}";
-//{
-//  {
-//      {
-//          {50,227,0},0,0,0,0,0
-//      },
-//      {
-//          0,0,0,0,0,0
-//      },
-//      {
-//          0,0,0,0,0,0
-//      }
-//  },
-//  {
-//      {
-//          {50,227,0},0,0,0,0,0
-//      },
-//      {
-//          {233,238,25},0,0,0,0,0
-//      },
-//      {
-//          0,0,0,0,0,0
-//      }
-//  },
-//    {
-//        {
-//            {50,227,0},0,0,0,0,0
-//        },
-//        {
-//            {233,238,25},0,0,0,0,0
-//        },
-//        {
-//            {233,238,25},0,0,0,0,0
-//        }
-//    }
-//}
 
             if(h < frames.size() - 1) {
                 result += ",";
@@ -272,9 +236,9 @@ public class Animator extends AMProcessing {
             for (int i = 0; i < json.length(); i++) {
                 Frame newFrame = new Frame();
                 JSONObject states = json.getJSONObject(i);
-                HashMap<Integer, Boolean> map = new HashMap<Integer, Boolean>();
+                HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
                 for (int j = 0; j < states.length(); j++) {
-                    map.put(j, states.getBoolean(String.valueOf(j)));
+                    map.put(j, states.getInt(String.valueOf(j)));
                 }
                 newFrame.getKubeWall().setStates(map);
                 newFrames.add(newFrame);

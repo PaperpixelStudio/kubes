@@ -202,7 +202,7 @@ public class KubeWallControls extends AbstractControlGroup {
                             .setPosition(0, pos_y)
                             .setLabel("Color of " + myType.getName() + " kube")
                             .setGroup(controlGroup)
-//                            .setColorValue(myType.getColor().getRGB())
+//                            .setColorValue(myType.getAMColor().getRGB())
             );
 
             if(myType == KubeType.INACTIVE_KUBE) {

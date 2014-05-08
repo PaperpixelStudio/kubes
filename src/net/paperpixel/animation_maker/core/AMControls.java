@@ -1,6 +1,8 @@
 package net.paperpixel.animation_maker.core;
 
 import controlP5.*;
+import controlP5.Button;
+import net.paperpixel.animation_maker.kube.Colors;
 import processing.core.PApplet;
 import processing.core.PVector;
 
@@ -12,12 +14,19 @@ public class AMControls extends AMProcessing {
     private ControlGroup bottom_controls;
     private ControlFont font;
     private Textlabel frameCount;
+    private Group paint_controls;
     private Group right_controls;
     private Group save_controls;
     private static final String BUTTON_PLAY = "play";
     private static final String BUTTON_STOP = "stop";
     private ListBox frameList;
     private Textarea save_textarea;
+
+    private Toggle is_brush;
+    private Button[] color_buttons;
+    private int active_color_btn = 0;
+
+    private int color_btn_size = 20;
 
     public AMControls() {
         cp5 = new ControlP5(p5);
@@ -26,8 +35,12 @@ public class AMControls extends AMProcessing {
 
         /*GROUPS*/
 
-        bottom_controls = cp5.addGroup("bottom_controls")
+        paint_controls = cp5.addGroup("paint_controls")
                 .setPosition(getControlsBottom())
+                .hideBar();
+
+        bottom_controls = cp5.addGroup("bottom_controls")
+                .setPosition(getControlsBottom().x, (getControlsBottom().y + 50))
                 .hideBar();
 
         right_controls = cp5.addGroup("right_controls")
@@ -35,8 +48,55 @@ public class AMControls extends AMProcessing {
                 .hideBar();
 
         save_controls = cp5.addGroup("save_controls")
-                .setPosition(300, getControlsRightBottom().y + 60)
+                .setPosition(300, getControlsBottom().y + 100)
                 .hideBar();
+
+
+        /* PAINT CONTROLS */
+
+        is_brush = cp5.addToggle("is_brush")
+                .moveTo(paint_controls)
+                .setCaptionLabel("Brush / Eraser")
+                .addListener(new BrushListener())
+                .setPosition(0, 0)
+                .setMode(ControlP5Constants.SWITCH);
+
+        color_buttons = new Button[Colors.values().length];
+        for(int i = 0; i < Colors.values().length; i++) {
+            Colors color = Colors.values()[i];
+            color_buttons[i] = cp5.addButton("color_" + i)
+                    .setSize(color_btn_size, color_btn_size)
+                    .setPosition(70 + ((color_btn_size + 4) * i), 0)
+                    .moveTo(paint_controls)
+                    .setValue(i)
+                    .setCaptionLabel("")
+                    .setColorBackground(color.getColor().getRGB())
+                    .setColorActive(color.getColor().getRGB())
+                    .addListener(new ColorListener());
+        }
+        color_buttons[0].trigger();
+
+        int xpos = color_buttons.length * (color_btn_size + 4) + 90;
+
+        cp5.addButton("move_left")
+                .setBroadcast(false)
+                .setCaptionLabel("Move pixels left")
+                .moveTo(paint_controls)
+                .addListener(new PixelMoveListener())
+                .setValue(-1)
+                .setBroadcast(true)
+                .setSize(90, 20)
+                .setPosition(xpos, 0);
+
+        cp5.addButton("move_right")
+                .setBroadcast(false)
+                .setCaptionLabel("Move pixels right")
+                .moveTo(paint_controls)
+                .addListener(new PixelMoveListener())
+                .setValue(1)
+                .setBroadcast(true)
+                .setSize(90, 20)
+                .setPosition(xpos + 100, 0);
 
 
         /*BOTTOM CONTROLS*/
@@ -101,7 +161,7 @@ public class AMControls extends AMProcessing {
                 .setItemHeight(30)
                 .hideBar()
                 .addListener(new FrameListListener());
-        
+
 
         cp5.addButton("add_frame_button")
                 .moveTo(right_controls)
@@ -193,15 +253,16 @@ public class AMControls extends AMProcessing {
     private void addShortcutText(int posX, int posY) {
         ArrayList<String> text = new ArrayList<String>();
 
-        text.add("[A-Y] toggle top kubes");
-        text.add("[Q-H] toggle middle kubes");
-        text.add("[W-N] toggle bottom kubes");
+        text.add("[b] for brush / eraser");
+        text.add("[e] for eraser");
+        text.add("[c] to change color");
+        text.add("[UP] move pixels left");
+        text.add("[DOWN] move pixels right");
         text.add("[TAB] toggle all kubes");
         text.add("[SPACE - ENTER - RETURN] play / stop");
         text.add("[+] add a frame after");
         text.add("[-] delete current frame");
-        text.add("[UP] show frame before");
-        text.add("[DOWN] show frame after");
+        text.add("[d] duplicate current frame");
         text.add("[$] show first frame");
         text.add("[µ] show last frame");
         text.add("[LEFT] move frame before");
@@ -267,6 +328,25 @@ public class AMControls extends AMProcessing {
 
 
 
+    /*GETTERS / SETTERS*/
+
+    public Textlabel getFrameCount() {
+        return frameCount;
+    }
+
+    public Toggle getBrushBtn() {
+        return is_brush;
+    }
+
+    public void changeColor() {
+        if(++active_color_btn >= color_buttons.length) {
+            active_color_btn = 0;
+        }
+        color_buttons[active_color_btn].trigger();
+    }
+
+
+
     /*LISTENERS*/
 
     private class ToggleActiveListener implements ControlListener {
@@ -295,13 +375,6 @@ public class AMControls extends AMProcessing {
         public void controlEvent(ControlEvent theEvent) {
             p5.getAnimator().addFrame(theEvent.getStringValue());
         }
-    }
-
-
-    /*GETTERS / SETTERS*/
-
-    public Textlabel getFrameCount() {
-        return frameCount;
     }
 
     private class StepUpDownListener implements ControlListener {
@@ -339,13 +412,53 @@ public class AMControls extends AMProcessing {
             }
         }
     }
-//    {{{{}{java.awt.Color[r=195,g=49,b=222]}{}{}{}{}}{{}{java.awt.Color[r=233,g=238,b=25]}{java.awt.Color[r=18,g=84,b=255]}{}{}{}}{{}{}{}{}{}{}}}{{{}{}{}{}{}{}}{{}{java.awt.Color[r=233,g=238,b=25]}{}{}{}{}}{{}{java.awt.Color[r=18,g=84,b=255]}{java.awt.Color[r=18,g=84,b=255]}{}{}{}}}}
 
     private class SaveListener implements ControlListener {
         public void controlEvent(ControlEvent theEvent) {
             String json = p5.getAnimator().getArray();
             save_textarea.setText("ANIMATION SAVED IN CLIPBOARD");
             p5.getClipboard().setClipboardContents(json);
+        }
+    }
+
+    private class BrushListener implements ControlListener {
+        @Override
+        public void controlEvent(ControlEvent controlEvent) {
+            Toggle myToggle = (Toggle) controlEvent.getController();
+            p5.setBrush(myToggle.getState());
+        }
+    }
+
+    private class ColorListener implements ControlListener {
+        @Override
+        public void controlEvent(ControlEvent controlEvent) {
+            Button myBtn = (Button) controlEvent.getController();
+            p5.setCurrentColor(Colors.values()[(int) myBtn.getValue()]);
+            for (Button thisButton : color_buttons) {
+                if (thisButton.getPosition().y < 0) {
+                    thisButton.setPosition(thisButton.getPosition().x + 2, 0);
+                    thisButton.setSize(color_btn_size, color_btn_size);
+                }
+            }
+            myBtn.setSize(color_btn_size + 4, color_btn_size + 4);
+            controlEvent.getController().setPosition(myBtn.getPosition().x - 2, myBtn.getPosition().y - 2);
+        }
+    }
+
+    private class PixelMoveListener implements ControlListener {
+        @Override
+        public void controlEvent(ControlEvent theEvent) {
+            Button btn = (Button) theEvent.getController();
+
+            try {
+                if(btn.getValue() == -1) {
+                    p5.getAnimator().getActiveFrame().getKubeWall().movePixelsLeft();
+                } else if(btn.getValue() == 1) {
+                    p5.getAnimator().getActiveFrame().getKubeWall().movePixelsRight();
+                }
+            } catch(NullPointerException e) {
+                // It's ok...
+            }
         }
     }
 }
