@@ -160,6 +160,10 @@ public class AMKubeWall extends AMProcessing {
         return map;
     }
 
+    public AMKube[][] getKubes() {
+        return kubes;
+    }
+
     public void setStates(HashMap<Integer, Boolean> states) {
         for(Map.Entry<Integer, Boolean> entry : states.entrySet()) {
             getKubeById(entry.getKey()).setActive(entry.getValue());

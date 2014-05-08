@@ -1,13 +1,13 @@
 package net.paperpixel.animation_maker.core;
 
+import net.paperpixel.animation_maker.kube.AMKube;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import processing.core.PApplet;
 
-import java.io.ObjectOutputStream;
+import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 
@@ -185,6 +185,83 @@ public class Animator extends AMProcessing {
         }
 
         return json.toString();
+    }
+
+    /*
+    frame
+        line
+            column
+                color
+     */
+    public String getArray() {
+        String result = "{";
+        for(int h = 0; h < frames.size(); h++) {
+            AMKube[][] kubes = frames.get(h).getKubeWall().getKubes();
+            result += "{";
+            for(int i = 0; i < kubes.length; i++) {
+                result += "{";
+                for(int j = 0; j < kubes[i].length; j++) {
+
+                    if(kubes[i][j].isActive()) {
+                        Color color = kubes[i][j].getColor();
+                        result += "{"+color.getRed() + "," + color.getGreen() + "," + color.getBlue() + "}";
+                    } else {
+                        result += "{0,0,0}";
+                    }
+
+                    if(j < kubes[i].length - 1) {
+                        result += ",";
+                    }
+                }
+                result += "}";
+
+                if(i < kubes.length - 1) {
+                    result += ",";
+                }
+            }
+            result += "}";
+//{
+//  {
+//      {
+//          {50,227,0},0,0,0,0,0
+//      },
+//      {
+//          0,0,0,0,0,0
+//      },
+//      {
+//          0,0,0,0,0,0
+//      }
+//  },
+//  {
+//      {
+//          {50,227,0},0,0,0,0,0
+//      },
+//      {
+//          {233,238,25},0,0,0,0,0
+//      },
+//      {
+//          0,0,0,0,0,0
+//      }
+//  },
+//    {
+//        {
+//            {50,227,0},0,0,0,0,0
+//        },
+//        {
+//            {233,238,25},0,0,0,0,0
+//        },
+//        {
+//            {233,238,25},0,0,0,0,0
+//        }
+//    }
+//}
+
+            if(h < frames.size() - 1) {
+                result += ",";
+            }
+        }
+
+        return result + "}";
     }
 
     public boolean load(String jsonString) {

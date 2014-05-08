@@ -46,8 +46,10 @@ public class Keyboard extends AMProcessing {
             }
         }
 
-        if (keyMap.get(key) != null) {
-            p5.getAnimator().getActiveFrame().activateKube(keyMap.get(key));
+        if (keyMap != null) {
+            if (keyMap.get(key) != null) {
+                p5.getAnimator().getActiveFrame().activateKube(keyMap.get(key));
+            }
         }
     }
 

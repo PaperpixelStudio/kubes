@@ -3,13 +3,15 @@ package net.paperpixel.animation_maker.core;
 import processing.core.PApplet;
 import processing.core.PVector;
 
+import java.awt.event.MouseEvent;
+
 public class AnimationMaker extends PApplet {
 
     private int animationStepDelay = 500;
-    private int totalLines = 3;
-    private int totalColumns = 6;
-    private int kubeSize = 70;
-    private int kubeMargin = 15;
+    private int totalLines = 6;
+    private int totalColumns = 37;
+    private int kubeSize = 20;
+    private int kubeMargin = 3;
     private PVector kubeWallPosition = new PVector(20, 20);
 
     private Animator animator;
@@ -22,7 +24,7 @@ public class AnimationMaker extends PApplet {
 
     public void setup() {
         smooth();
-        size(900, 600);
+        size(1200, 600);
 
         AMProcessing.setup(this);
         controls = new AMControls();
@@ -46,7 +48,10 @@ public class AnimationMaker extends PApplet {
         Keyboard.keyPressed();
     }
 
-
+    @Override
+    public void mouseDragged(MouseEvent mouseEvent) {
+        animator.getActiveFrame().activateKube(new PVector(mouseEvent.getX(), mouseEvent.getY()));
+    }
 
     public int getTotalColumns() {
         return totalColumns;

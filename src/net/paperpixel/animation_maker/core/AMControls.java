@@ -35,7 +35,7 @@ public class AMControls extends AMProcessing {
                 .hideBar();
 
         save_controls = cp5.addGroup("save_controls")
-                .setPosition(getControlsRightBottom().x - 200, getControlsRightBottom().y + 60)
+                .setPosition(300, getControlsRightBottom().y + 60)
                 .hideBar();
 
 
@@ -339,10 +339,11 @@ public class AMControls extends AMProcessing {
             }
         }
     }
+//    {{{{}{java.awt.Color[r=195,g=49,b=222]}{}{}{}{}}{{}{java.awt.Color[r=233,g=238,b=25]}{java.awt.Color[r=18,g=84,b=255]}{}{}{}}{{}{}{}{}{}{}}}{{{}{}{}{}{}{}}{{}{java.awt.Color[r=233,g=238,b=25]}{}{}{}{}}{{}{java.awt.Color[r=18,g=84,b=255]}{java.awt.Color[r=18,g=84,b=255]}{}{}{}}}}
 
     private class SaveListener implements ControlListener {
         public void controlEvent(ControlEvent theEvent) {
-            String json = p5.getAnimator().getJSON();
+            String json = p5.getAnimator().getArray();
             save_textarea.setText("ANIMATION SAVED IN CLIPBOARD");
             p5.getClipboard().setClipboardContents(json);
         }

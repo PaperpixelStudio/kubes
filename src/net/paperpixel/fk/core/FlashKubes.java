@@ -83,7 +83,7 @@ public final class FlashKubes extends PApplet {
 
         try {
             kinect = new SimpleOpenNI(this, SimpleOpenNI.RUN_MODE_MULTI_THREADED);
-            isKinectConnected = kinect.enableDepth() ? true : false;
+            isKinectConnected = kinect.enableDepth();
             kinect.setMirror(true);
         } catch (Throwable e) {
             isKinectConnected = false;
